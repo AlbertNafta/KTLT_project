@@ -1,5 +1,17 @@
+#include <iostream>
+#include<thread>
+#pragma comment(lib, "Winmm.lib")
+#include <conio.h>
+#include <windows.h>
 #include<iostream>
+#include<time.h>
+#include<cstdlib>
 #include<string.h>
+#include<windows.h>
+#include <windows.h>
+#include<unistd.h>
+#include<bits/stdc++.h>
+#include<conio.h>
  
 using namespace std;
 
@@ -21,16 +33,20 @@ struct student{
 	string birth;
 	int socialID;
 	int score;
-	staff *pNext;
+	student *pNext;
 };
 
 struct schoolYear{
-	struct courses{
+	struct semester{
 		string startDate;
 		string endDate;
-		int ID;
-	};
-};
+		struct courses{
+			string startDate;
+			string endDate;
+			int ID;
+		};
+	}Fall1,Summer2,Autumm3;
+}year1;
 
 int main()//this is just a test
 {
