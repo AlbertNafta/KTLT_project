@@ -29,12 +29,6 @@ struct schoolYear{
 		string startDate;
 		string endDate;
 		int ID;
-		struct teacher{
-			string name;
-			teacher* pTeach;
-		};
-		
-		
 	};
 };
 
