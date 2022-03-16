@@ -63,7 +63,7 @@ int main()//this is just a test
 	staff *pHead_t=new staff;
 	inputUserProfile(pHead_s);
 	inputTeacherProfile(pHead_t);
-	int roles; //dùng để biết ai là người đăng nhập: student hoặc teacher
+	int roles; //dùng để biết ai là người đăng nhập: student nếu roles==0 hoặc teacher nếu roles==1
 	roles=logIn(pHead_s,pHead_t);
 
 }
