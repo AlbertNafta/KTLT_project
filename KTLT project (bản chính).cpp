@@ -55,13 +55,15 @@ struct schoolYear{
 	}Fall1,Summer2,Autumm3;
 }year1;
 
-
+//nhớ gắn các struct trên khi viết hàm ".h"
 
 int main()//this is just a test
 {
-	int choose;
 	student *pHead_s=new student;
+	staff *pHead_t=new staff;
 	inputUserProfile(pHead_s);
-	logIn(pHead_s);
-	return 0;
+	inputTeacherProfile(pHead_t);
+	int roles; //dùng để biết ai là người đăng nhập: student hoặc teacher
+	roles=logIn(pHead_s,pHead_t);
+
 }
