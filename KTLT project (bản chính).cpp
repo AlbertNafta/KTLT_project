@@ -63,8 +63,5 @@ int main()//this is just a test
 	student *pHead_s=new student;
 	inputUserProfile(pHead_s);
 	logIn(pHead_s);
-	
-	
-	
 	return 0;
 }
