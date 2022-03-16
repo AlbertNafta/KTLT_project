@@ -354,7 +354,7 @@ int logIn(student *&pHead_s,staff *&pHead_t)
 					pT->pNext=NULL;
 					OutputStaff(pHead_t);
 					system("cls");
-					cout<<"DONE !!!";
+					cout<<"DONE !!! ";
 					sleep(2);
 					system("cls");
 					
