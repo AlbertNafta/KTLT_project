@@ -52,6 +52,6 @@ void OutputStaff(staff *&pHead_t)
 			
 		pC2=pC2->pNext;
 		
-	}
+	} 
 	ofs.close();
 }
