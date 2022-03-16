@@ -1,0 +1,27 @@
+void inputTeacherProfile(staff *&pHead_t)
+{
+	
+	staff *pC=pHead_t;
+	ifstream fin("Teacher.txt");
+	int people;
+	fin>>people;
+	for(int a=1;a<=people;a++)
+{
+	
+	fin>>pC->userName;
+    fin>>pC->passWord;
+    fin>>pC->name;
+    fin>>pC->age;
+    fin>>pC->majors;
+
+
+    if(a==people){
+		pC->pNext=NULL;
+		break;
+	}
+    pC->pNext=new staff;
+    pC=pC->pNext;
+}
+
+
+}
