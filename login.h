@@ -47,12 +47,22 @@ struct schoolYear{
 		string startDate;
 		string endDate;
 		struct courses{
+			string name;
+			string teacher;
 			string startDate;
 			string endDate;
 			int ID;
+			int credits;
+			int nums;
+			int days;
+			timeTable timetable;
 		};
 	}Fall1,Summer2,Autumm3;
 }year1;
+
+struct timeTable{
+	int week[4][7];
+}
 
 void inputUserProfile(student *&pHead_s)
 {
