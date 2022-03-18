@@ -43,14 +43,24 @@ struct staff{
 	staff *pNext;
 };
 
+struct timeTable{
+	int week[4][7];
+};
+
 struct schoolYear{
 	struct semester{
 		string startDate;
 		string endDate;
 		struct courses{
+			string name;
+			string teacher;
 			string startDate;
 			string endDate;
 			int ID;
+			int credits;
+			int nums;
+			int days;
+			timeTable timetable;
 		};
 	}Fall1,Summer2,Autumm3;
 }year1;
