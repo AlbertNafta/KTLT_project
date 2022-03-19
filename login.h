@@ -49,66 +49,79 @@ struct schoolYear{
 		struct courses{
 			string startDate;
 			string endDate;
-			int ID;
+			string ID;
 		};
 	}Fall1,Summer2,Autumm3;
 }year1;
 
-void inputUserProfile(student *&pHead_s)
+void inputUserProfile(student *&pHead_s) // user = student
 {
-	
-	student *pC=pHead_s;
-	ifstream fin("User.txt");
-	int people;
-	fin>>people;
-	for(int a=1;a<=people;a++)
-{
-	
-	fin>>pC->userName;
-    fin>>pC->passWord;
-    fin>>pC->firstName;
-    fin>>pC->lastName;
-    fin>>pC->gender;
-    fin>>pC->birth;
-    fin>>pC->social_ID;
-
-    if(a==people){
-		pC->pNext=NULL;
-		break;
+	student *pC = pHead_s;
+	FILE *file = fopen("User.CSV", "r");
+	char content[1024];
+	while(fgets(content, 1024, file))
+	{
+		char *v = strtok(content, ",");
+		while(v)
+		{
+			pC->userName=v;
+			v = strtok(NULL, ",");
+			pC->passWord=v;
+			v = strtok(NULL, ",");
+			pC->lastName=v;
+			v = strtok(NULL, ",");
+			pC->firstName=v;
+			v = strtok(NULL, ",");
+			pC->gender=v;
+			v = strtok(NULL, ",");
+			pC->birth;
+			v = strtok(NULL, ",");
+			pC->social_ID=atoi(v);
+			v = strtok(NULL, ",");
+		}
+		if(!fgets(content, 1024, file))
+		{
+			pC->pNext=NULL;
+			break;
+		}
+		pC->pNext=new student;
+		pC=pC->pNext;
 	}
-    pC->pNext=new student;
-    pC=pC->pNext;
-}
+	fclose(file);
 
 }
 
 
 void inputTeacherProfile(staff *&pHead_t)
 {
-	
-	staff *pC=pHead_t;
-	ifstream fin("Teacher.txt");
-	int people;
-	fin>>people;
-	for(int a=1;a<=people;a++)
-{
-	
-	fin>>pC->userName;
-    fin>>pC->passWord;
-    fin>>pC->name;
-    fin>>pC->age;
-    fin>>pC->majors;
-
-
-    if(a==people){
-		pC->pNext=NULL;
-		break;
+	staff *pC = pHead_t;
+	FILE *file = fopen("Teacher.CSV", "r");
+	char content[1024];
+	while(fgets(content, 1024, file))
+	{
+		char *v = strtok(content, ",");
+		while(v)
+		{
+			pC->userName=v;
+			v = strtok(NULL, ",");
+			pC->passWord=v;
+			v = strtok(NULL, ",");
+			pC->name=v;
+			v = strtok(NULL, ",");
+			pC->age=atoi(v);
+			v = strtok(NULL, ",");
+			pC->majors=v;
+			v = strtok(NULL, ",");
+		}
+		if(!fgets(content, 1024, file))
+		{
+			pC->pNext=NULL;
+			break;
+		}
+		pC->pNext=new staff;
+		pC=pC->pNext;
 	}
-    pC->pNext=new staff;
-    pC=pC->pNext;
-}
-
-
+	fclose(file);
 }
 
 void OutputUser(student *&pHead_s)
@@ -143,30 +156,23 @@ void OutputUser(student *&pHead_s)
 
 void OutputStaff(staff *&pHead_t)
 {
-	staff *pC2 = pHead_t;
-	staff *pLen = pHead_t;
-	int lenght=0;
-	ofstream ofs("Teacher.txt");
-	while(pLen!=NULL)//lenght ?
-	{
-	
-		lenght++;
-		pLen=pLen->pNext;
-	}
-	ofs<<lenght<<endl;
-    while(pC2!=NULL) 
-	{
-		ofs << pC2->userName<<endl;
-		ofs << pC2->passWord<<endl;
-		ofs << pC2->name<<endl;
-		ofs << pC2->age<<endl;
-		ofs << pC2->majors<<endl;
+fstream fout;
+  
+    // opens an existing csv file or creates a new file.
+    fout.open("Teacher.CSV", ios::out | ios::app);
 
+  	
+  	staff *pC=pHead_t;
+    // Read the input
+    while(pC!=NULL) {
+        fout << pC->userName<<","
+			<<pC->passWord<<","
+			<<pC->name<<","
+			<<pC->age<<","
+			<<pC->majors;
 			
-		pC2=pC2->pNext;
-		
-	}
-	ofs.close();
+		pC=pC->pNext;
+    }
 }
 
 int logIn(student *&pHead_s,staff *&pHead_t)
@@ -306,7 +312,7 @@ int logIn(student *&pHead_s,staff *&pHead_t)
 					cin>>pS->gender;
 					cout<<"Birthdate: ";
 					cin>>pS->birth;
-					cout<<"Social ID: ";
+					cout<<"Social ID (8nums): ";
 					cin>>pS->social_ID;
 					cout<<"And password is: ";
 					cin>>pS->passWord;
@@ -324,7 +330,11 @@ int logIn(student *&pHead_s,staff *&pHead_t)
 				if(roles2.compare("teacher")==0)
 				{
 					pT=pHead_t;
-				while(pT->pNext!=NULL)pT=pT->pNext;
+				while(pT->pNext!=NULL)
+				{
+					pT=pT->pNext;
+					cout<<"Done ";
+				}
 					pT->pNext=new staff;
 					pT=pT->pNext;
 					cout<<"Username: ";
@@ -354,7 +364,7 @@ int logIn(student *&pHead_s,staff *&pHead_t)
 					pT->pNext=NULL;
 					OutputStaff(pHead_t);
 					system("cls");
-					cout<<"DONE !!! ";
+					cout<<"DONE !!!";
 					sleep(2);
 					system("cls");
 					
@@ -364,10 +374,10 @@ int logIn(student *&pHead_s,staff *&pHead_t)
 				}
 			}
 		}
-	}while(granted!=1 ) ;
+	}while(granted!=1) ;
 	int role;
-	if(roles1.compare("teacher")==0)role=1;
-	if(roles1.compare("student")==0)role=0;
-	return role;
+	if(roles1.compare("teacher")==0){role=1;return pHead_t,role;}
+	if(roles1.compare("student")==0){role=0;return pHead_s,role;}
 	}
+
 
