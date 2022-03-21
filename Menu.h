@@ -24,6 +24,47 @@ struct classes{
 	classes *pDoor;
 };
 
+void createClass(classes *&pHead_c)
+{
+	system("cls");
+	cout<<"This work only for input CSV"<<endl;
+	classes *pC=pHead_c;
+	cout<<"Enter file name: ";
+	char fname[1024];
+	scanf ("%s", fname);
+	FILE *file = fopen(fname, "r");
+	while(pC->pDoor!=NULL)pC=pC->pDoor;
+	pC->pDoor=new classes;
+	pC=pC->pDoor;
+	char content[1024];
+	while(fgets(content, 1024, file))
+	{
+		char *v = strtok(content, ",");
+		while(v)
+		{
+			pC->className=v;
+			v = strtok(NULL, ",");
+			pC->number=atoi(v);
+			v = strtok(NULL, ",");
+			for(int a=0;a<pC->number;a++)
+			{
+				pC->student[a]=atoi(v);
+				v = strtok(NULL, ",");
+			}
+		}
+		pC->pDoor=new classes;
+		pC=pC->pDoor;
+	}
+	pC=pHead_c;
+	while(pC->pDoor->pDoor!=NULL)
+	{
+		pC=pC->pDoor;
+	}
+	classes *pDel=pC->pDoor;
+	pC->pDoor=NULL;
+	delete pDel;
+	fclose(file);
+}
 
 void addStudentToClass(classes *&pHead_c,student *&pHead_s)
 {
@@ -246,8 +287,8 @@ fstream fout;
     // Read the input
     while(pC!=NULL) 
 	{
-		if(pC!=pHead_c)fout<<"";
-		if(pC->pDoor==NULL)fout<<endl;
+		if(pC!=pHead_c)fout<<endl;
+		
         fout <<pC->className<<","
 			<<pC->number<<",";
 		for(int a=0;a<pC->number;a++)
@@ -293,10 +334,14 @@ void MenuTeacher(staff *&pHead_t,staff *&pT,student *&pHead_s)
 				cin>>choose2;
 				switch(choose2)
 				{
-					case 1:break;
+					case 1:{
+						createClass(pHead_c);
+						outputClass(pHead_c);
+						break;
+					}
 					case 2:{
 						viewClass(pHead_c,pHead_s);
-						outputClass(pHead_c);
+						
 						break;
 					}
 					case 3:
