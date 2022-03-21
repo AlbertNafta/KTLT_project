@@ -67,7 +67,7 @@ void inputUserProfile(student *&pHead_s) // user = student
 			v = strtok(NULL, ",");
 			pC->firstName=v;
 			v = strtok(NULL, ",");
-			pC->gender=v;
+			pC->gender=v; 
 			v = strtok(NULL, ",");
 			pC->birth;
 			v = strtok(NULL, ",");
