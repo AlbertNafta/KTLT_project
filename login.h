@@ -15,12 +15,7 @@
 
 
 using namespace std;
-struct score{
-	int midterm;
-	int final;
-	int progress;
-	int average;
-};
+
 struct student{
 	string userName;
 	string passWord;
@@ -79,14 +74,20 @@ void inputUserProfile(student *&pHead_s) // user = student
 			pC->social_ID=atoi(v);
 			v = strtok(NULL, ",");
 		}
-		if(!fgets(content, 1024, file))
-		{
-			pC->pNext=NULL;
-			break;
-		}
+
 		pC->pNext=new student;
 		pC=pC->pNext;
 	}
+	pC=pHead_s;
+	while(pC->pNext->pNext!=NULL)
+	{
+		pC=pC->pNext;
+	}
+	student *pDel=pC->pNext;
+	pC->pNext=NULL;
+	delete pDel;
+
+
 	fclose(file);
 
 }
@@ -113,45 +114,49 @@ void inputTeacherProfile(staff *&pHead_t)
 			pC->majors=v;
 			v = strtok(NULL, ",");
 		}
-		if(!fgets(content, 1024, file))
-		{
-			pC->pNext=NULL;
-			break;
-		}
 		pC->pNext=new staff;
 		pC=pC->pNext;
 	}
+	pC=pHead_t;
+	while(pC->pNext->pNext!=NULL)
+	{
+		pC=pC->pNext;
+	}
+	staff *pDel=pC->pNext;
+	pC->pNext=NULL;
+	delete pDel;
 	fclose(file);
 }
 
 void OutputUser(student *&pHead_s)
 {
-	student *pC2 = pHead_s;
-	student *pLen = pHead_s;
-	int lenght=0;
-	ofstream ofs("User.txt");
-	while(pLen!=NULL)//lenght ?
-	{
-	
-		lenght++;
-		pLen=pLen->pNext;
-	}
-	ofs<<lenght<<endl;
-    while(pC2!=NULL) 
-	{
-		ofs << pC2->userName<<endl;
-		ofs << pC2->passWord<<endl;
-		ofs << pC2->firstName<<endl;
-		ofs << pC2->lastName<<endl;
-		ofs << pC2->gender<<endl;
-		ofs << pC2->birth<<endl;
-		ofs << pC2->social_ID<<endl;
+fstream fout;
+  
+    // opens an existing csv file or creates a new file.
 
-			
-		pC2=pC2->pNext;
-		
+  
+    // opens an existing csv file or creates a new file.
+    fout.open("User.CSV", ios::out );
+
+  	
+  	student *pC=pHead_s;
+    // Read the input
+    while(pC!=NULL) 
+	{
+		if(pC!=pHead_s)fout<<"";
+		if(pC->pNext==NULL)fout<<endl;
+        fout <<pC->userName<<","
+			<<pC->passWord<<","
+			<<pC->lastName<<","
+			<<pC->firstName<<","
+			<<pC->gender<<","
+			<<pC->birth<<","
+			<<pC->social_ID<<",";
+	pC=pC->pNext;
 	}
-	ofs.close();
+		
+		
+    
 }
 
 void OutputStaff(staff *&pHead_t)
@@ -159,20 +164,25 @@ void OutputStaff(staff *&pHead_t)
 fstream fout;
   
     // opens an existing csv file or creates a new file.
-    fout.open("Teacher.CSV", ios::out | ios::app);
+    fout.open("Teacher.CSV", ios::out );
 
   	
   	staff *pC=pHead_t;
     // Read the input
-    while(pC!=NULL) {
-        fout << pC->userName<<","
+    while(pC!=NULL) 
+	{
+		if(pC!=pHead_t)fout<<"";
+		if(pC->pNext==NULL)fout<<endl;
+        fout <<pC->userName<<","
 			<<pC->passWord<<","
 			<<pC->name<<","
 			<<pC->age<<","
 			<<pC->majors;
-			
-		pC=pC->pNext;
-    }
+	pC=pC->pNext;
+	}
+		
+		
+    
 }
 
 int logIn(student *&pHead_s,staff *&pHead_t)
@@ -333,7 +343,6 @@ int logIn(student *&pHead_s,staff *&pHead_t)
 				while(pT->pNext!=NULL)
 				{
 					pT=pT->pNext;
-					cout<<"Done ";
 				}
 					pT->pNext=new staff;
 					pT=pT->pNext;
@@ -348,7 +357,7 @@ int logIn(student *&pHead_s,staff *&pHead_t)
 							cout<<"Username: ";
 							cin>>pT->userName;
 							pT2=pHead_t;
-							cout<<"Done ";
+							
 						}
 						pT2=pT2->pNext;
 					}
