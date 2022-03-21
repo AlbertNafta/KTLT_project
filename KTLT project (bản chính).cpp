@@ -70,10 +70,20 @@ struct schoolYear{
 int main()//this is just a test
 {
 	student *pHead_s=new student;
+	student *pS=pHead_s;
 	staff *pHead_t=new staff;
+	staff *pT=pHead_t;
 	inputUserProfile(pHead_s);
 	inputTeacherProfile(pHead_t);
-	int roles; //dùng để biết ai là người đăng nhập: student nếu roles==0 hoặc teacher nếu roles==1
+	int roles; //vai trò người đăng nhập
 	roles=logIn(pHead_s,pHead_t);
+	if (roles==1)
+	{
+		MenuTeacher(pHead_t,pT,pHead_s);
+	}	
+	system("cls");
+	delete []pHead_s;
+	delete []pHead_t;
+	return 0;
 
 }
