@@ -12,7 +12,7 @@
 #include<unistd.h>
 #include<bits/stdc++.h>
 #include<conio.h>
-
+#include "Schoolyear.h"
 
 using namespace std;
 
@@ -182,8 +182,8 @@ void removeStudentFromClass(classes *&pHead_c,student *&pHead_s)
 		for(int n=0;n<70;n++)
 		{
 			pS->student[here+n]=pS->student[here+n+1];
-			if(pS->student[here+n+2]==NULL){
-				pS->student[here+n+1]=NULL;
+			if(pS->student[here+n+2]=='\0'){
+				pS->student[here+n+1]=='\0';
 				break;
 			}
 		}
@@ -304,18 +304,37 @@ fstream fout;
     
 }
 
+void viewTeacherPro(staff *&pHead_t,string uses)
+{
+	staff *pT2=pHead_t;
+					while(pT2!=NULL)
+					{
+						if(pT2->userName.compare(uses)==0)
+						{
+							break;
+						}
+						pT2=pT2->pNext;
+					}
+	system("cls");
+	cout<<"Username: "<<pT2->userName<<endl;
+	cout<<"Password: "<<pT2->passWord<<endl;
+	cout<<"Real name: "<<pT2->name<<endl;
+	cout<<"Major: "<<pT2->majors;
+	cout<<"Age: "<<pT2->age<<endl;
+	_getch();
+	
+}
 
-
-
-void MenuTeacher(staff *&pHead_t,staff *&pT,student *&pHead_s)
+void MenuTeacher(staff *&pHead_t,student *&pHead_s,string *use)
 {
 	int choose,choose2;
+	string here=*use;
 	classes *pHead_c = new classes;
 	inputClasses(pHead_c);
 	do{
 		cout<<"Press 1: Manage class"<<endl;
 		cout<<"Press 2: Manage courses"<<endl;
-		cout<<"Press 3: ??? "<<endl;
+		cout<<"Press 3: Create school year ? "<<endl;
 		cout<<"Press 4: View profile "<<endl;
 		cout<<"Press 5: Exit"<<endl;
 		cout<<"I choose: ";
@@ -356,8 +375,23 @@ void MenuTeacher(staff *&pHead_t,staff *&pT,student *&pHead_s)
 						
 				}
 				}while(choose2!=4);system("cls");break;
+			
+			case 3:{
+				creatSchoolYear();
+				system("cls");
+				break;
+			}
+			
+			case 4:
+			{
+			viewTeacherPro(pHead_t,here);
+			system("cls");
+			break;	
+			}
+				
 		}
 	
 		
 	}while(choose!=5);
 }
+
