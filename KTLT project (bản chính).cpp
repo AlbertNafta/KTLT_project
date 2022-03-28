@@ -24,6 +24,7 @@ struct score{
 	int final;
 	int progress;
 	int average;
+	int ID;
 };
 
 struct aSchoolYear{
