@@ -393,5 +393,5 @@ void MenuTeacher(staff *&pHead_t,student *&pHead_s,string *use)
 	
 		
 	}while(choose!=5);
-}
+} 
 
