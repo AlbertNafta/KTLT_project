@@ -1,14 +1,10 @@
-#include <iostream>
 #include<thread>
-#include <conio.h>
-#include <windows.h>
 #include<iostream>
 #include<time.h>
 #include<cstdlib>
 #include<string.h>
 #include<cstring>
 #include<windows.h>
-#include <windows.h>
 #include<unistd.h>
 #include<bits/stdc++.h>
 #include<conio.h>
