@@ -379,4 +379,3 @@ void logIn(student *&pHead_s,staff *&pHead_t,string *use,int *role)
 	}
 
 
-
