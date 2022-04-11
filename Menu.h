@@ -50,6 +50,14 @@ struct classes{
 	classes *pDoor;
 };
 
+struct score{
+	string stuName;
+	int subject; //number of courses that student learn
+	int final[20][2];//contain courses's ID;
+						//contain final point
+	score *paper;
+};
+
 void createClass(classes *&pHead_c)
 {
 	system("cls");
@@ -142,9 +150,14 @@ void addStudentToClass(classes *&pHead_c,student *&pHead_s)
 		}
 		pS->student[pS->number]=ID;
 		pS->number+=1;
-		
+
 		cout<<"Done !!!";
 		_getch();
+}
+
+void gotoxny(int x, int y) {
+	COORD pos = { x,y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
 void removeStudentFromClass(classes *&pHead_c,student *&pHead_s)
@@ -375,8 +388,8 @@ void viewTeacherPro(staff *&pHead_t,string uses)
 	
 }
 
-void inputCourse(courses *&head,int &courseAllow)
-{
+void inputCourse(courses *&head,int &courseAllow,timeTable &time)
+{ 
 		courses *pC=head;
 		int ok=1;
 	FILE *file = fopen("Courses.CSV", "r");
@@ -390,7 +403,7 @@ void inputCourse(courses *&head,int &courseAllow)
 			
 					if(ok==1)
 			{
-					cout<<"D";
+
 			courseAllow=atoi(v);
 			ok=0;	
 			}
@@ -420,10 +433,21 @@ void inputCourse(courses *&head,int &courseAllow)
 			v = strtok(NULL, ",");
 			pC->nums=atoi(v);
 			v = strtok(NULL, ",");
-					
+			for(int i=0;i<=1;i++){
+			int day=atoi(v);	
+			v = strtok(NULL, ",");
+			int sess=atoi(v);
+			time.week[sess-1][day-2]=pC->ID;
+			v = strtok(NULL, ",");
+			}
 		}
+		if(ok==2)
+		{
 		pC->jump=new courses;
-		pC=pC->jump;
+		pC=pC->jump;	
+		}
+		ok=2;
+
 	}
 	pC=head;
 	while(pC->jump->jump!=NULL)
@@ -469,7 +493,7 @@ void viewCourses(courses *&head,student *&pHead_s)
 						_getch();
 }
 
-void outputCourse(courses *&head,int &courseAllow)
+void outputCourse(courses *&head,int &courseAllow,timeTable &time)
 {
 	fstream fout;
   
@@ -496,12 +520,59 @@ void outputCourse(courses *&head,int &courseAllow)
 			fout<<pC->ID<<","
 			<<pC->credits<<","
 			<<pC->nums;
+		for(int x=0;x<7;x++)
+		{
+			for(int z=0;z<4;z++)
+			{
+				if(time.week[z][x]==pC->ID)
+				{
+					cout<<"found ";
+					fout<<","<<x+2<<","<<z+1;
+				}
+			}
+		}
 	pC=pC->jump;
 	}
 }
 
+void inputScore(score *&sco)
+{
+	score *pC=sco;
+	FILE *file = fopen("FinalMark.CSV", "r");
+	char content[1024];
+	while(fgets(content, 1024, file))
+	{
+		char *v = strtok(content, ",");
+		while(v)
+		{
+			pC->stuName=v;
+			v = strtok(NULL, ",");
+			pC->subject=atoi(v);
+			v = strtok(NULL, ",");
+			for(int a=0;a<pC->subject;a++)
+			{
+				pC->final[a][0]=atoi(v);
+				v = strtok(NULL, ",");
+				pC->final[a][1]=atoi(v);
+				v = strtok(NULL, ",");
+			}
+		}
+		pC->paper=new score;
+		pC=pC->paper;
+	}
+	pC=sco;
+	while(pC->paper->paper!=NULL)
+	{
+		pC=pC->paper;
+	}
+	score *pDel=pC->paper;
+	pC->paper=NULL;
+	delete pDel;
+	fclose(file);
+}
 
-void createCourse(courses *&head)
+
+void createCourse(courses *&head,timeTable &time)
 {
 	courses *pC=head;
 	while(pC->jump!=NULL)pC=pC->jump;
@@ -522,10 +593,258 @@ void createCourse(courses *&head)
 	cout<<"EndDate: ";
 	cin>>pC->endDate;
 	pC->numberStu=0;
-
+	int day,sess;
+			for(int i=0;i<=1;i++){
+			cout<<"It will be teach on what day (2->7) ? "	;
+			cin>>day;
+			cout<<"And on what session (1->4) ? "	;
+			cin>>sess;
+			time.week[sess-1][day-2]=pC->ID;
+			
+			}	
 }
 
-void MenuTeacher(staff *&pHead_t,student *&pHead_s,string *use,classes *&pHead_c,courses *&head,int &courseAllow)
+void createScore(score *&sco,courses *&head)
+{
+		system("cls");
+		int ok=1;
+		int first=1,count=0;
+	cout<<"This work only for input CSV"<<endl;
+	score *pC=sco;
+	cout<<"Enter file name: ";
+	char fname[1024];
+	scanf ("%s", fname);
+	FILE *file = fopen(fname, "r");
+	int coName;
+	int coID;
+	score *here;
+	char content[1024];
+	while(fgets(content, 1024, file))
+	{
+		char *v = strtok(content, ",");
+		while(v and ok==1)
+			{
+			
+			if(ok==1)
+				{
+	
+				coName=atoi(v);
+				
+				ok=0;	
+				}
+			courses *co=head;
+				while(co!=NULL)
+			{
+	
+				if(co->ID==coName)
+				{
+					coID=co->ID;break;
+				}
+				co=co->jump;
+			}
+			v = strtok(NULL, ",");
+
+			}
+		while(v)
+		{
+			int create=0;
+			pC=sco;
+			string perName=v;
+			
+			cout<<perName<<endl;
+			getch();
+			while(pC!=NULL)
+			{
+				
+				if(pC->stuName.compare(perName)==0)break;
+				if(pC->paper==NULL)
+				{
+
+					
+					
+					pC->paper=new score;
+					pC=pC->paper;
+					pC->paper=NULL;
+					
+					create=1;
+					break;
+				}
+				
+				pC=pC->paper;
+			}
+
+			pC->stuName=perName;
+			v = strtok(NULL, ",");
+			if(create==1)
+			pC->subject=0;
+			pC->subject+=1;
+			pC->final[pC->subject-1][0]=coID;
+			pC->final[pC->subject-1][1]=atoi(v);
+			v = strtok(NULL, ",");
+
+		}
+
+	}
+	pC->paper=NULL;
+	fclose(file);
+}
+
+void viewScore(score *&sco,courses *&head)
+{
+	score *pc=sco;
+						courses *ps=head;
+						while(pc!=NULL)
+						{
+							cout<<"Name: "<<pc->stuName<<endl;
+							
+							for(int z=0;z<pc->subject;z++)
+							{
+								cout<<z+1<<".|";
+								ps=head;
+								while(ps!=NULL)
+								{
+									if(ps->ID==pc->final[z][0])
+									{
+										break;
+									}
+									ps=ps->jump;
+								}
+								cout<<ps->name<<": "<<pc->final[z][1]<<endl;
+							}
+							pc=pc->paper;
+							cout<<endl;
+						}
+						cout<<"Press any key to back..."<<endl;
+						_getch();
+}
+
+void outputScore(score *&sco)
+{
+		fstream fout;
+  
+    // opens an existing csv file or creates a new file.
+    fout.open("FinalMark.CSV", ios::out );
+
+  	score *pC=sco;
+    // Read the input
+    while(pC!=NULL) 
+	{
+		if(pC!=sco)fout<<endl;
+		
+        fout <<pC->stuName<<","
+			<<pC->subject<<",";
+		for(int a=0;a<pC->subject;a++)
+		{
+			fout<<pC->final[a][0];
+			fout<<",";
+			fout<<pC->final[a][1];
+			if(a<pC->subject-1)fout<<",";
+		}
+
+	pC=pC->paper;
+	}
+}
+void viewTime(timeTable &time,courses *&head){
+	courses *pc=head;
+	gotoxny(6,0);
+	cout<<"Monday |";
+	gotoxny(16,0);
+	cout<<"Tuesday |";
+	gotoxny(26,0);
+	cout<<"Wednesday |";
+	gotoxny(36,0);
+	cout<<"Thursday |";
+	gotoxny(46,0);
+	cout<<"Friday |";
+	gotoxny(56,0);
+	cout<<"Saturday |";
+	gotoxny(66,0);
+	cout<<"Sunday ";
+	gotoxny(0,2);
+	cout<<"S1 |";
+	gotoxny(0,4);
+	cout<<"S2 |";
+	gotoxny(0,6);
+	cout<<"S3 |";
+	gotoxny(0,8);
+	cout<<"S4 |";
+		for(int x=0;x<4;x++) 
+		{
+			for(int z=0;z<7;z++)
+			{
+				gotoxny(6+10*z,2*x+2);
+				if(time.week[x][z]!=0)
+				{
+					pc=head;
+					while(pc!=NULL)
+					{
+						if(pc->ID==time.week[x][z])break;
+						pc=pc->jump;
+					}
+					cout<<pc->name<<" ";
+				}
+				else cout<<"0";
+				
+			}
+			cout<<endl;
+		}
+}
+
+void deleteCourse(courses *&head,timeTable &time)
+{
+	courses *pC=head;
+	int fou=0;
+	string name;
+	
+	do{
+	cout<<"Enter the name of course to delete: ";
+	cin>>name;
+	if(head->name.compare(name)==0)
+	{
+		courses *del=head;
+		head=head->jump;
+		delete del;
+		system("cls");
+		cout<<"DONE !!!";
+		sleep(1);
+		system("cls");
+		return;
+	}
+	while(pC->jump!=NULL)
+	{
+		if(pC->jump->name.compare(name)==0)
+		{
+			fou=1;
+			break;
+		}
+		pC=pC->jump;
+	}
+		if(fou==0)
+		{
+			system("cls");
+			cout<<"No such course !"<<endl;
+		}
+	}while(fou!=1);
+	courses *del=pC->jump;
+	pC->jump=del->jump;
+			for(int x=0;x<7;x++)
+		{
+			for(int z=0;z<4;z++)
+			{
+				if(time.week[z][x]==del->ID)
+				{
+					time.week[z][x]=0;
+				}
+			}
+		}
+	delete del;
+		system("cls");
+		cout<<"DONE !!!";
+		sleep(1);
+		system("cls");
+}
+
+void MenuTeacher(score *&sco,staff *&pHead_t,student *&pHead_s,string *use,classes *&pHead_c,courses *&head,int &courseAllow,timeTable &time)
 {
 	int choose,choose2;
 	string here=*use;
@@ -534,8 +853,9 @@ void MenuTeacher(staff *&pHead_t,student *&pHead_s,string *use,classes *&pHead_c
 		cout<<"Press 1: Manage class"<<endl;
 		cout<<"Press 2: Manage courses"<<endl;
 		cout<<"Press 3: Create school year ? "<<endl;
-		cout<<"Press 4: View profile "<<endl;
-		cout<<"Press 5: Exit"<<endl;
+		cout<<"Press 4: Manage student's score"<<endl;
+		cout<<"Press 5: View profile "<<endl;
+		cout<<"Press 6: Exit"<<endl;
 		cout<<"I choose: ";
 		cin>>choose;
 		choose2=0;
@@ -580,19 +900,21 @@ void MenuTeacher(staff *&pHead_t,student *&pHead_s,string *use,classes *&pHead_c
 				system("cls");
 				cout<<"Press 1: Create courses"<<endl;
 				cout<<"Press 2: View course"<<endl;
-				cout<<"Press 3: ??? "<<endl;
-				cout<<"Press 4: Exit"<<endl;
+				cout<<"Press 3: Course Registration "<<endl;
+				cout<<"Press 4: View timetable"<<endl;
+				cout<<"Press 5: Delete course"<<endl;
+				cout<<"Press 6: Exit"<<endl;
 				cout<<"I choose: ";
 				cin>>choose3;
 				switch(choose3)
 				{
 					case 1:{
 						system("cls");
-						createCourse(head);
+						createCourse(head,time);
 						system("cls");
 						cout<<"DONE !!!";
 						sleep(1);
-						outputCourse(head,courseAllow);
+						outputCourse(head,courseAllow,time);
 						system("cls");
 						break;
 					}
@@ -603,25 +925,92 @@ void MenuTeacher(staff *&pHead_t,student *&pHead_s,string *use,classes *&pHead_c
 						system("cls");
 						break;
 					}
+					
+					case 3:{
+						system("cls");
+						char allow;
+						cout<<"Do you want to allow student to sign up courses ? (y/n) " ;
+						cin>>allow;
+						if(allow=='y'||allow=='Y')courseAllow=1;
+						if(allow=='n'||allow=='N')courseAllow=0;
+						outputCourse(head,courseAllow,time);
+						system("cls");
+						cout<<"OK...";
+						sleep(1);
+						system("cls");
+						break;
+					}
+					case 4:			
+					{
+				system("cls");
+				viewTime(time,head);
+				getch();
+				system("cls");
+				break;
+					}
+
+				
+				case 5:
+					{
+						system("cls");
+						deleteCourse(head,time);
+						outputCourse(head,courseAllow,time);
+						break;
+					}
 				}
-				}while(choose3!=4);
+				}while(choose3!=6);
+				system("cls");
 				break;
 			}
+			
 			case 3:{
 				creatSchoolYear();
 				system("cls");
 				break;
 			}
+			case 4:{
+				system("cls");
+				int pick;
+				do{
+				cout<<"Press 1: Input score"<<endl;
+				cout<<"Press 2: View score"<<endl;
+				cout<<"Press 3: Exit"<<endl;
+				cout<<"I choose ";
+				cin>>pick;
+				switch(pick)
+				{
+					case 1:{
+						system("cls");
+						createScore(sco,head);
+						outputScore(sco);
+						system("cls");
+						cout<<"DONE !!!";
+						sleep(1);
+						system("cls");
+						break;
+					}
+					case 2:{
+						viewScore(sco,head);
+						outputScore(sco);
+						system("cls");
+						break;
+					}
+				}			
+				}while(pick!=3);system("cls");break;
+					}
 			
-			case 4:
+			case 5:
 			{
 			viewTeacherPro(pHead_t,here);
 			system("cls");
 			break;	
 			}
+			
+
 				
 		}
 	
 		
-	}while(choose!=5);
+	}while(choose!=6);
 }
+
