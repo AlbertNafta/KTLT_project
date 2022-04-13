@@ -1,14 +1,10 @@
-#include <iostream>
-#include<thread>
-#include <conio.h>
-#include <windows.h>
 #include<iostream>
+#include<thread>
 #include<time.h>
 #include<cstdlib>
 #include<string.h>
 #include<cstring>
 #include<windows.h>
-#include <windows.h>
 #include<unistd.h>
 #include<bits/stdc++.h>
 #include<conio.h>
@@ -16,12 +12,7 @@
 #include "Menu.h"
 #include "Student.h"
 
-
 using namespace std;
-
-
-
-
 
 void gotoxy(int x, int y) ;
 void addStudentToClass(classes *&pHead_c,student *&pHead_s);
@@ -51,7 +42,6 @@ void inputScore(score *&sco);
 void viewScore(score *&sco,courses *&head);
 void outputScore(score *&sco);
 void viewScore(score *&sco,string name,student *&pHead_s,courses *&head);
-
 
 int main()//this is just a test
 {
