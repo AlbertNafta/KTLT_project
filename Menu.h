@@ -1,17 +1,14 @@
-#include <iostream>
+#include<iostream>
 #include<thread>
-#include <conio.h>
-#include <windows.h>
+#include<conio.h>
 #include<iostream>
 #include<time.h>
 #include<cstdlib>
 #include<string.h>
 #include<cstring>
 #include<windows.h>
-#include <windows.h>
 #include<unistd.h>
 #include<bits/stdc++.h>
-#include<conio.h>
 #include "Schoolyear.h"
 
 using namespace std;
@@ -338,9 +335,6 @@ fstream fout;
 		}
 	pC=pC->pDoor;
 	}
-		
-		
-    
 }
 
 void viewTeacherPro(staff *&pHead_t,string uses)
