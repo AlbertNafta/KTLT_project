@@ -12,7 +12,9 @@
 #include<unistd.h>
 #include<bits/stdc++.h>
 #include<conio.h>
+
 using namespace std;
+
 void txtColor(int color);
 void gotoxy(int x, int y);
 void drawF(int col, int row, int x, int y);
@@ -22,7 +24,6 @@ void DisplayUser(string *roles,string *userName );
 void DisplayNotFound(string *roles,string *userName );
 void DisplayTypePass(string *userName,string *passWord );
 void DisplayTypeWrongPass(string *userName,string *passWord );
-
 
 struct student{
 	string userName;
@@ -82,10 +83,8 @@ void inputUserProfile(student *&pHead_s) // user = student
 	student *pDel=pC->pNext;
 	pC->pNext=NULL;
 	delete pDel;
-
-
+	
 	fclose(file);
-
 }
 
 
