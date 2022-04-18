@@ -1,0 +1,26 @@
+void displayTeacher() {
+	nameDisplay();
+	txtColor(7);
+	gotoxy(75, 11);
+	cout << "Log in as teacher...";
+	gotoxy(76, 15);
+	cout << "Create a school year"; 
+	gotoxy(76, 19);
+	cout << "Create a semester"; 
+	gotoxy(78, 23);
+	cout << "Create a course"; 
+	gotoxy(76, 27);
+	cout << "View the scoreboard";
+	gotoxy(80, 31);
+	cout << "Add student";
+	gotoxy(82, 35);
+	cout << "Profile";
+
+	drawF(2, 24, 73, 14);
+	drawF(2, 24, 73, 18);
+	drawF(2, 24, 73, 22);
+	drawF(2, 24, 73, 26);
+	drawF(2, 24, 73, 30);
+	drawF(2, 24, 73, 34);
+	drawF(38, 170, 0, 0);
+}
